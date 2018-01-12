@@ -21,14 +21,14 @@ public class BoardManager : MonoBehaviour {
 	public Count wallCount = new Count(5,9); 
 	public Count foodCount = new Count(1,5); 
 	public GameObject exit; 
-	public GameObject floorTiles; 
-	public GameObject wallTiles;
-	public GameObject foodTiles;
-	public GameObject enemyTiles;
-	public GameObject outerWallTiles;
+	public GameObject[] floorTiles; 
+	public GameObject[] wallTiles;
+	public GameObject[] foodTiles;
+	public GameObject[] enemyTiles;
+	public GameObject[] outerWallTiles;
 	
 	private Transform boardHolder; 
-	private List <Vector3> gidPositions = new List<Vector3>(); 
+	private List <Vector3> gridPositions = new List<Vector3>(); 
 	
 	void InitialiseList(){
 		gridPositions.Clear(); 
@@ -58,7 +58,7 @@ public class BoardManager : MonoBehaviour {
 
 	Vector3 RandomPosition(){
 		int randomIndex = Random.Range(0,gridPositions.Count); 
-		Vector3 randomPosition = gridPosition[randomIndex]; 
+		Vector3 randomPosition = gridPositions[randomIndex]; 
 		gridPositions.RemoveAt(randomIndex); 
 		return randomPosition; 
 	}
@@ -68,17 +68,17 @@ public class BoardManager : MonoBehaviour {
 		
 		for(int i = 0; i < objectCount; i++){
 			Vector3 randomPosition = RandomPosition(); 
-			GameObject tileChoice = tileArray[Ranodm.Range (0, tileArray.Length)]; 
+			GameObject tileChoice = tileArray[Random.Range (0, tileArray.Length)]; 
 			Instantiate(tileChoice, randomPosition, Quaternion.identity); 
 			
 		}
 	}
 	
 	public void SetupScene(int level){
-		BoardSetup(); 
-		InitalizeList(); 
+		BoardSetup();
+        InitialiseList(); 
 		LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum); 
-		LayoutObjectAtRandom(foodTlies, foodCount.minimum, foodCount.maximum); 
+		LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum); 
 		int enemyCount = (int)Mathf.Log(level,2f);
 		LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount); 
 		Instantiate(exit, new Vector3(columns-1, rows -1, 0f), Quaternion.identity); 
